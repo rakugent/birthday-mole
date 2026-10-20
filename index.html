@@ -136,10 +136,6 @@
   </section>
 
   <p class="message" id="message" aria-live="polite">Tap Let's Play to start!</p>
-  <div class="controls">
-    <button class="control secondary" id="musicBtn">🎵 Turn music on</button>
-    <button class="control secondary" id="soundBtn">🔊 Sound: On</button>
-  </div>
 </main>
 
 <script>
@@ -151,8 +147,6 @@
   const messageEl = document.getElementById('message');
   const overlay = document.getElementById('overlay');
   const startBtn = document.getElementById('startBtn');
-  const musicBtn = document.getElementById('musicBtn');
-  const soundBtn = document.getElementById('soundBtn');
 
   let score = 0, misses = 0, best = 0, active = -1, running = false;
   let moleTimer = null, spawnTimer = null, hitLock = false;
@@ -195,7 +189,7 @@
     return elapsed * 1000;
   }
   function startMusic() {
-    audio(); musicOn = true; musicBtn.textContent = '🎵 Music: On';
+    audio(); musicOn = true;
     clearTimeout(musicTimer);
     const playLoop = () => {
       if (!musicOn || !running) return;
@@ -205,7 +199,7 @@
     if (running) playLoop();
   }
   function stopMusic() {
-    musicOn = false; clearTimeout(musicTimer); musicBtn.textContent = '🎵 Turn music on';
+    musicOn = false; clearTimeout(musicTimer);
   }
   function vibrate(pattern=35) {
     if ('vibrate' in navigator) { try { navigator.vibrate(pattern); } catch (_) {} }
@@ -292,24 +286,16 @@
   }
   function startGame() {
     audio();
+    stopMusic();
     score=0; misses=0; active=-1; running=true; hitLock=false; currentMoleDuration=1050;
     clearTimeout(moleTimer); clearTimeout(spawnTimer);
     holes.forEach(h=>{ h.classList.remove('active','hit'); h.querySelector('.mole').src='before.png'; });
     updateHud(); overlay.classList.remove('show');
     messageEl.textContent='Go go go, Prinzy! 🎯';
-    if (musicOn) startMusic();
+    startMusic();
     scheduleNext(300);
   }
   startBtn.addEventListener('click', startGame);
-  musicBtn.addEventListener('click', () => {
-    audio();
-    if (musicOn) stopMusic();
-    else { musicOn=true; musicBtn.textContent='🎵 Music: On'; if (running) startMusic(); else { playBirthdayTune(); musicTimer=setTimeout(()=>{ if(!running) stopMusic(); },9000); } }
-  });
-  soundBtn.addEventListener('click', () => {
-    soundOn=!soundOn; soundBtn.textContent=soundOn?'🔊 Sound: On':'🔇 Sound: Off';
-    if (soundOn) tone(660,.1,'sine',.05);
-  });
   // If the player explicitly enables music before the round, the tune will play once;
   // starting the game will loop it.
   updateHud();
