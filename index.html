@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#171a46">
+<title>Happy Birthday Prinzy!</title>
+<style>
+  :root { --navy:#171a46; --purple:#6d4aff; --pink:#ff5fa2; --yellow:#ffd84d; --cream:#fff8e8; --green:#72e6a6; }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; min-height:100vh; color:var(--navy);
+    font-family: "Trebuchet MS", system-ui, sans-serif;
+    background:
+      radial-gradient(ellipse at 15% 18%, rgba(255,35,190,.28), transparent 26%),
+      radial-gradient(ellipse at 88% 22%, rgba(0,225,255,.26), transparent 27%),
+      radial-gradient(ellipse at 50% 78%, rgba(116,45,255,.3), transparent 35%),
+      linear-gradient(135deg, #050617 0%, #10072d 45%, #030511 100%);
+    display:flex; justify-content:center; padding:20px 12px 28px;
+    overflow-x:hidden;
+  }
+  body::before, body::after {
+    content:""; position:fixed; z-index:-1; width:70vw; height:150vh;
+    top:-20vh; pointer-events:none; opacity:.65; filter:blur(2px);
+    transform-origin:top center;
+  }
+  body::before {
+    left:8%; transform:rotate(24deg);
+    background:linear-gradient(180deg, rgba(255,35,190,0) 0%, rgba(255,35,190,.28) 22%, rgba(255,35,190,.05) 65%, transparent 100%);
+    clip-path:polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+  }
+  body::after {
+    right:2%; transform:rotate(-25deg);
+    background:linear-gradient(180deg, rgba(0,238,255,0) 0%, rgba(0,238,255,.3) 22%, rgba(0,238,255,.04) 65%, transparent 100%);
+    clip-path:polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+  }
+  .wrap { width:min(620px,100%); text-align:center; }
+  h1 { font-family:"Comic Sans MS","Comic Sans",cursive; font-size:clamp(2rem,7vw,3.45rem); line-height:1.05; margin:8px 0 8px; color:#fff; letter-spacing:-1px; animation:discoShine 2.8s ease-in-out infinite; }
+  @keyframes discoShine {
+    0%,100% { text-shadow:0 0 5px #fff, 0 0 12px #00eaff, 0 0 24px #00eaff; }
+    33% { text-shadow:0 0 5px #fff, 0 0 14px #ff35c8, 0 0 28px #ff35c8, 0 0 42px #ff35c8; }
+    66% { text-shadow:0 0 5px #fff, 0 0 14px #ffe66d, 0 0 28px #ff9d00, 0 0 42px #ff35c8; }
+  }
+  .birthday-arc { display:flex; justify-content:center; align-items:center; gap:0; height:1.25em; white-space:nowrap; }
+  .birthday-arc span { display:inline-block; font-size:clamp(1.45rem,5.7vw,2.8rem); }
+  .birthday-arc span:nth-child(1) { transform:translateY(7px) rotate(-18deg); }
+  .birthday-arc span:nth-child(2) { transform:translateY(4px) rotate(-14deg); }
+  .birthday-arc span:nth-child(3) { transform:translateY(1px) rotate(-10deg); }
+  .birthday-arc span:nth-child(4) { transform:translateY(-2px) rotate(-6deg); }
+  .birthday-arc span:nth-child(5) { transform:translateY(-4px) rotate(-3deg); }
+  .birthday-arc span:nth-child(6) { transform:translateY(-5px); }
+  .birthday-arc span:nth-child(7) { transform:translateY(-7px) rotate(2deg); }
+  .birthday-arc span:nth-child(8) { transform:translateY(-8px) rotate(4deg); }
+  .birthday-arc span:nth-child(9) { transform:translateY(-8px) rotate(5deg); }
+  .birthday-arc span:nth-child(10) { transform:translateY(-7px) rotate(6deg); }
+  .birthday-arc span:nth-child(11) { transform:translateY(-5px) rotate(7deg); }
+  .birthday-arc span:nth-child(12) { transform:translateY(-2px) rotate(10deg); }
+  .birthday-arc span:nth-child(13) { transform:translateY(1px) rotate(14deg); }
+  .birthday-arc span:nth-child(14) { transform:translateY(7px) rotate(18deg); }
+  .birthday-name { display:block; }
+  .subtitle { font-weight:900; font-size:clamp(.95rem,3.6vw,1.15rem); margin:12px 0 16px; }
+  .hud { display:flex; gap:8px; justify-content:center; margin:0 auto 14px; }
+  .stat { flex:1; max-width:160px; background:var(--cream); border:1.5px solid var(--navy); border-radius:16px; padding:7px 6px; }
+  .stat small { display:block; font-weight:900; font-size:.68rem; text-transform:uppercase; letter-spacing:1px; }
+  .stat strong { display:block; font-size:1.3rem; line-height:1.2; }
+  .board {
+    background:transparent; border:none; border-radius:24px;
+    padding:clamp(10px,3vw,18px);
+    position:relative;
+  }
+  .holes { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(7px,2vw,12px); max-width:350px; margin:0 auto; }
+  .hole {
+    aspect-ratio:1 / .88; position:relative; border:none; border-radius:18px;
+    background:transparent; overflow:hidden;
+    padding:0; cursor:pointer; touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .hole:focus-visible { outline:2px solid white; outline-offset:2px; }
+  .hole .mole {
+    position:absolute; width:82%; height:90%; object-fit:contain; left:9%; bottom:12%;
+    opacity:0; transform:translateY(48%); transition:transform .12s ease-out, opacity .12s ease-out;
+    pointer-events:none; user-select:none; -webkit-user-drag:none;
+  }
+  .hole.active .mole { opacity:1; transform:translateY(0); }
+  .hole.hit .mole { opacity:1; transform:translateY(-4%) scale(.92); }
+  .hole .dirt { position:absolute; z-index:2; bottom:-9%; left:-8%; width:116%; height:29%; background:#a96638; border:1.5px solid #754322; border-radius:50%; pointer-events:none; }
+  .hole .spark { position:absolute; z-index:3; top:-4%; left:22%; width:100%; font-size:clamp(.7rem,3.5vw,1.2rem); opacity:0; transform:scale(.5); pointer-events:none; }
+  .hole.hit .spark { opacity:1; transform:scale(1.15); }
+  .message { min-height:32px; margin:17px 0 4px; font-weight:1000; font-size:1.1rem; color:#fff; }
+  .controls { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:16px 0 8px; }
+  button.control {
+    border:1.5px solid var(--navy); border-radius:14px; padding:11px 17px; font:900 1rem inherit;
+    font-family:inherit; font-weight:900; cursor:pointer; color:var(--navy); background:var(--yellow);
+    touch-action:manipulation;
+  }
+  button.control:active { transform:translateY(1px); }
+  button.control.secondary { background:white; }
+  .hint { font-size:.84rem; font-weight:700; opacity:.85; margin:12px 6px 0; }
+  .overlay { position:absolute; inset:0; z-index:10; background:#171a46dd; border-radius:18px; display:none; align-items:center; justify-content:center; padding:20px; }
+  .overlay.show { display:flex; }
+  .panel { width:min(360px,100%); padding:22px 18px; background:var(--cream); border:2px solid var(--navy); border-radius:22px; }
+  .panel h2 { margin:0 0 8px; font-size:clamp(1.8rem,7vw,2.5rem); color:#6d4aff; }
+  .panel p { font-weight:800; margin:8px 0 16px; }
+  @media (max-width:380px) { .stat { padding:6px 3px; } .stat small { font-size:.62rem; } .stat strong { font-size:1.1rem; } .board { padding:8px; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1><span class="birthday-arc"><span>H</span><span>a</span><span>p</span><span>p</span><span>y</span><span>&nbsp;</span><span>B</span><span>i</span><span>r</span><span>t</span><span>h</span><span>d</span><span>a</span><span>y</span></span><span class="birthday-name">Prinzy!</span></h1>
+
+  <section class="hud" aria-label="Game score">
+    <div class="stat"><small>Bonks</small><strong id="score">0 / 20</strong></div>
+    <div class="stat"><small>Misses</small><strong id="misses">0 / 3</strong></div>
+    <div class="stat"><small>Best</small><strong id="best">0</strong></div>
+  </section>
+
+  <section class="board" aria-label="Whack a mole game">
+    <div class="holes" id="holes">
+      <button class="hole" data-i="0" aria-label="Hole 1"><img class="mole" src="before.png" alt=""><span class="spark">💥</span><span class="dirt"></span></button>
+      <button class="hole" data-i="1" aria-label="Hole 2"><img class="mole" src="before.png" alt=""><span class="spark">⭐</span><span class="dirt"></span></button>
+      <button class="hole" data-i="2" aria-label="Hole 3"><img class="mole" src="before.png" alt=""><span class="spark">💥</span><span class="dirt"></span></button>
+      <button class="hole" data-i="3" aria-label="Hole 4"><img class="mole" src="before.png" alt=""><span class="spark">⭐</span><span class="dirt"></span></button>
+      <button class="hole" data-i="4" aria-label="Hole 5"><img class="mole" src="before.png" alt=""><span class="spark">💥</span><span class="dirt"></span></button>
+      <button class="hole" data-i="5" aria-label="Hole 6"><img class="mole" src="before.png" alt=""><span class="spark">⭐</span><span class="dirt"></span></button>
+      <button class="hole" data-i="6" aria-label="Hole 7"><img class="mole" src="before.png" alt=""><span class="spark">💥</span><span class="dirt"></span></button>
+      <button class="hole" data-i="7" aria-label="Hole 8"><img class="mole" src="before.png" alt=""><span class="spark">⭐</span><span class="dirt"></span></button>
+      <button class="hole" data-i="8" aria-label="Hole 9"><img class="mole" src="before.png" alt=""><span class="spark">💥</span><span class="dirt"></span></button>
+    </div>
+    <div class="overlay show" id="overlay">
+      <div class="panel">
+        <h2>Ready, Prinzy? 🎂</h2>
+        <p>Bonk 20 moles to win your birthday surprise! You can miss 3 times.</p>
+        <button class="control" id="startBtn">Let's Play! 🎉</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="message" id="message" aria-live="polite">Tap Let's Play to start!</p>
+  <div class="controls">
+    <button class="control secondary" id="musicBtn">🎵 Turn music on</button>
+    <button class="control secondary" id="soundBtn">🔊 Sound: On</button>
+  </div>
+</main>
+
+<script>
+(() => {
+  const holes = [...document.querySelectorAll('.hole')];
+  const scoreEl = document.getElementById('score');
+  const missesEl = document.getElementById('misses');
+  const bestEl = document.getElementById('best');
+  const messageEl = document.getElementById('message');
+  const overlay = document.getElementById('overlay');
+  const startBtn = document.getElementById('startBtn');
+  const musicBtn = document.getElementById('musicBtn');
+  const soundBtn = document.getElementById('soundBtn');
+
+  let score = 0, misses = 0, best = 0, active = -1, running = false;
+  let moleTimer = null, spawnTimer = null, hitLock = false;
+  let soundOn = true, musicOn = false, audioCtx = null, musicTimer = null, musicStep = 0;
+  let currentMoleDuration = 1050;
+
+  function audio() {
+    if (!audioCtx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) audioCtx = new AC();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+  function tone(freq, duration=.12, type='sine', volume=.07, delay=0) {
+    if (!soundOn) return;
+    const ctx = audio(); if (!ctx) return;
+    const osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+    gain.gain.setValueAtTime(.0001, ctx.currentTime + delay);
+    gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + delay + .012);
+    gain.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + delay + duration);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(ctx.currentTime + delay); osc.stop(ctx.currentTime + delay + duration + .03);
+  }
+  function hitSound() {
+    tone(740,.09,'square',.045); tone(1040,.13,'triangle',.05,.07);
+  }
+  function missSound() { tone(190,.18,'sawtooth',.04); }
+  function playBirthdayTune() {
+    // Familiar Happy Birthday melody, synthesized locally (no external audio file required).
+    const melody = [
+      [392,.28],[392,.18],[440,.42],[392,.42],[523,.42],[494,.72],
+      [392,.28],[392,.18],[440,.42],[392,.42],[587,.42],[523,.72],
+      [392,.28],[392,.18],[784,.42],[659,.42],[523,.42],[494,.42],[440,.72],
+      [698,.28],[698,.18],[659,.42],[523,.42],[587,.42],[523,.85]
+    ];
+    let elapsed = 0;
+    melody.forEach(([f,d]) => { tone(f,d,'sine',.028,elapsed); elapsed += d + .055; });
+    return elapsed * 1000;
+  }
+  function startMusic() {
+    audio(); musicOn = true; musicBtn.textContent = '🎵 Music: On';
+    clearTimeout(musicTimer);
+    const playLoop = () => {
+      if (!musicOn || !running) return;
+      const length = playBirthdayTune();
+      musicTimer = setTimeout(playLoop, length + 500);
+    };
+    if (running) playLoop();
+  }
+  function stopMusic() {
+    musicOn = false; clearTimeout(musicTimer); musicBtn.textContent = '🎵 Turn music on';
+  }
+  function vibrate(pattern=35) {
+    if ('vibrate' in navigator) { try { navigator.vibrate(pattern); } catch (_) {} }
+  }
+  function updateHud() {
+    scoreEl.textContent = `${score} / 20`;
+    missesEl.textContent = `${misses} / 3`;
+    bestEl.textContent = best;
+  }
+  function clearMole() {
+    clearTimeout(moleTimer);
+    if (active >= 0) {
+      holes[active].classList.remove('active','hit');
+      holes[active].querySelector('.mole').src = 'before.png';
+    }
+    active = -1; hitLock = false;
+  }
+  function scheduleNext(delay=230) {
+    clearTimeout(spawnTimer);
+    if (!running) return;
+    spawnTimer = setTimeout(showMole, delay);
+  }
+  function showMole() {
+    if (!running) return;
+    clearMole();
+    const choices = holes.map((_,i)=>i).filter(i=>i!==active);
+    active = Math.floor(Math.random()*holes.length);
+    const hole = holes[active];
+    hole.querySelector('.mole').src = 'before.png';
+    hole.classList.add('active');
+    hitLock = false;
+    const duration = Math.max(470, currentMoleDuration - Math.floor(score/4)*45);
+    moleTimer = setTimeout(() => {
+      if (!running || active < 0 || hitLock) return;
+      clearMole();
+      misses++; updateHud(); missSound();
+      messageEl.textContent = misses >= 3 ? 'That was 3 misses! One more and it’s game over! 👀' : 'Oops! The mole got away! 👀';
+      if (misses > 3) endGame(false);
+      else scheduleNext(220);
+    }, duration);
+  }
+  function whack(index) {
+    if (!running || index !== active || hitLock) return;
+    hitLock = true; clearTimeout(moleTimer);
+    const hole = holes[index];
+    hole.classList.add('hit');
+    hole.querySelector('.mole').src = 'after.png';
+    score++; best = Math.max(best,score); updateHud();
+    messageEl.textContent = ['BONK! 🎉','Nice hit! ⭐','Birthday power! 💥','Legendary bonk! 🥳'][Math.floor(Math.random()*4)];
+    hitSound(); vibrate([35,25,45]);
+    if (score >= 20) {
+      setTimeout(() => endGame(true), 350);
+      return;
+    }
+    setTimeout(() => {
+      if (!running) return;
+      clearMole();
+      currentMoleDuration = Math.max(520, currentMoleDuration - 9);
+      scheduleNext(180);
+    }, 260);
+  }
+  holes.forEach((hole,i) => {
+    hole.addEventListener('pointerdown', e => { e.preventDefault(); whack(i); });
+  });
+  function endGame(won) {
+    running = false; clearTimeout(moleTimer); clearTimeout(spawnTimer); clearTimeout(musicTimer);
+    clearMole();
+    if (won) {
+      messageEl.textContent = 'YOU DID IT! Happy Birthday, Prinzy! 🎂';
+      overlay.querySelector('h2').textContent = 'YOU WON! 🏆';
+      overlay.querySelector('p').textContent = '20 BONKS! Happy Birthday, Prinzy! Hope your day is amazing! 🎂🎉';
+      startBtn.textContent = 'Play Again 🔄';
+      tone(523,.18,'triangle',.06); tone(659,.18,'triangle',.06,.18); tone(784,.3,'triangle',.06,.36); tone(1046,.5,'triangle',.06,.62);
+      vibrate([80,40,80,40,150]);
+    } else {
+      messageEl.textContent = 'Game over! Give it another go! 💪';
+      overlay.querySelector('h2').textContent = 'Game Over! 😵';
+      overlay.querySelector('p').textContent = `You got ${score} bonks. Try again and get to 20!`;
+      startBtn.textContent = 'Retry 🔄';
+      missSound(); vibrate([100,50,100]);
+    }
+    overlay.classList.add('show');
+    stopMusic();
+  }
+  function startGame() {
+    audio();
+    score=0; misses=0; active=-1; running=true; hitLock=false; currentMoleDuration=1050;
+    clearTimeout(moleTimer); clearTimeout(spawnTimer);
+    holes.forEach(h=>{ h.classList.remove('active','hit'); h.querySelector('.mole').src='before.png'; });
+    updateHud(); overlay.classList.remove('show');
+    messageEl.textContent='Go go go, Prinzy! 🎯';
+    if (musicOn) startMusic();
+    scheduleNext(300);
+  }
+  startBtn.addEventListener('click', startGame);
+  musicBtn.addEventListener('click', () => {
+    audio();
+    if (musicOn) stopMusic();
+    else { musicOn=true; musicBtn.textContent='🎵 Music: On'; if (running) startMusic(); else { playBirthdayTune(); musicTimer=setTimeout(()=>{ if(!running) stopMusic(); },9000); } }
+  });
+  soundBtn.addEventListener('click', () => {
+    soundOn=!soundOn; soundBtn.textContent=soundOn?'🔊 Sound: On':'🔇 Sound: Off';
+    if (soundOn) tone(660,.1,'sine',.05);
+  });
+  // If the player explicitly enables music before the round, the tune will play once;
+  // starting the game will loop it.
+  updateHud();
+})();
+</script>
+</body>
+</html>
